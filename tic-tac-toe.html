@@ -6,7 +6,7 @@
 <link rel="import" href="../core-icons/av-icons.html">
 
 <!--
-Element providing solution to no problem in particular.
+Polymer element for Tic-Tac-Toe game
 
 ##### Example
 
@@ -17,7 +17,7 @@ Element providing solution to no problem in particular.
 @status alpha
 @homepage http://polymerlabs.github.io/tic-tac-toe
 -->
-<polymer-element name="tic-tac-toe" attributes="notitle author">
+<polymer-element name="tic-tac-toe" attributes="">
 
   <template>
 
@@ -170,25 +170,94 @@ Element providing solution to no problem in particular.
   <script>
 
     Polymer({
+      /**
+       * The 'onwinner' event is fired when winner exists
+       *
+       * @event onwinner
+       */
 
+      /**
+       * The 'ondraw' event is fired when a draw situation reached
+       *
+       * @event ondraw
+       */
+
+      /**
+       * The 'onstop' event is fired when game stopped
+       *
+       * @event onstop
+       */
+
+      /**
+       * Current move 'X' or 'O'
+       *
+       * @attribute currentmove
+       * @type String
+       */
       currentmove: 'X',
 
+      /**
+       * Game board with results of all moving
+       *
+       * @attribute gameboard
+       * @type Array
+       */
       gameboard: null,
 
+      /**
+       * Game board with results of moving 'X'
+       *
+       * @attribute gameboardTic
+       * @type Array
+       */
       gameboardTic: null,
 
+      /**
+       * Game board with results of moving 'O'
+       *
+       * @attribute gameboardTac
+       * @type Array
+       */
       gameboardTac: null,
 
+      /**
+       * Current status of game, running or not
+       *
+       * @attribute running
+       * @type Boolean
+       */
       running: false,
 
-      gameButtonTitle: "Start game",
-
+      /**
+       * Default icon for start or stop game button
+       *
+       * @attribute gameButtonIcon
+       * @type String
+       */
       gameButtonIcon: "av:play-arrow",
 
+      /**
+       * Flag which contains current winner 'X', 'O' or '--'
+       *
+       * @attribute wins
+       * @type String
+       */
       wins: "--",
 
+      /**
+       * Scores of winner
+       *
+       * @attribute winnerScore
+       * @type Number
+       */
       winnerScore: 0,
 
+      /**
+       * Field for storing information for user
+       *
+       * @attribute information
+       * @type String
+       */
       information: "",
 
       ready: function() {
@@ -200,28 +269,56 @@ Element providing solution to no problem in particular.
         this.initGameData();
       },
 
+      /**
+       * Change current move using switching between 'X' and 'O'
+       * @method toggleNextMove
+       */
       toggleNextMove: function(){
         this.currentmove = this.currentmove == 'X' ? 'O' : 'X';
       },
 
+      /**
+       * Play 'FadeScale' animation on HTMLElement
+       *
+       * @method playFadeScaleAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
       playFadeScaleAnimation: function(target){
         var animation = this.$.fadescale;
         animation.target = target;
         animation.play();
       },
 
+      /**
+       * Play 'BigShake' animation on HTMLElement
+       *
+       * @method playBigShakeAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
       playBigShakeAnimation: function(target){
         var animation = this.$.bigshake;
         animation.target = target;
         animation.play();
       },
 
+      /**
+       * Play 'Shake' animation on HTMLElement
+       *
+       * @method playShakeAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
       playShakeAnimation: function(target){
         var animation = this.$.shake;
         animation.target = target;
         animation.play();
       },
 
+      /**
+       * Changes style of HTMLElement which represent a cell
+       *
+       * @method toggleTicTacStyle
+       * @param {object} target - HTMLElement of cell element.
+       */
       toggleTicTacStyle: function(target){
         target.classList.remove('grey');
         target.classList.add(this.currentmove == 'X' ? 'tic' : 'tac');
@@ -229,6 +326,12 @@ Element providing solution to no problem in particular.
         iconElement.icon = this.currentmove == 'X' ?  'close' : 'radio-button-off';
       },
 
+      /**
+       * Set grayed style for HTMLElement which represent a cell
+       *
+       * @method toggleGrayedStyle
+       * @param {object} target - HTMLElement of cell element.
+       */
       toggleGrayedStyle: function(target){
         target.classList.remove('grey');
         target.classList.remove('tac');
@@ -236,16 +339,36 @@ Element providing solution to no problem in particular.
         target.classList.add('grayed');
       },
 
+      /**
+       * Fill array of gameboard element with value of current move by row and column indexes
+       *
+       * @method fillGameBoard
+       * @param {Number} row - Index of row for cell element.
+       * @param {Number} col - Index of col for cell element.
+       */
       fillGameBoard: function(row, col){
         this.gameboard[row][col] = this.currentmove;
         var boardState = this.getBoardState();
         boardState[row * 3 + col] = 1;
       },
 
+      /**
+       * Checks that cell of game board is empty by using row and column indexes
+       *
+       * @method isGameBoardCellClear
+       * @param {Number} row - Index of row for cell element.
+       * @param {Number} col - Index of column for cell element.
+       * @returns {Boolean} - Status of gameboard cell (filled or empty)
+       */
       isGameBoardCellClear: function(row, col){
         return !this.gameboard[row][col];
       },
 
+      /**
+       * Reset style of cells and clear icon inside cells
+       *
+       * @method resetCells
+       */
       resetCells: function(){
         var cells = this.shadowRoot.querySelectorAll('.cell');
         for(var i= 0, len = cells.length; i < len; i++){
@@ -259,6 +382,11 @@ Element providing solution to no problem in particular.
         }
       },
 
+      /**
+       * Initialize game data
+       *
+       * @method initGameData
+       */
       initGameData: function(){
         this.wins = '--';
         this.currentmove = 'X';
@@ -267,10 +395,22 @@ Element providing solution to no problem in particular.
         this.gameboardTac = [0,0,0,0,0,0,0,0,0];
       },
 
+      /**
+       * Return gameboard state for current type of move ('X' or 'O')
+       *
+       * @method getBoardState
+       * @returns {Array} - Array with statuses of gameboard cells for 'X' or 'O'
+       */
       getBoardState: function(){
         return this.currentmove == 'X' ? this.gameboardTic : this.gameboardTac;
       },
 
+      /**
+       * Returns number of scores if found wins combination for current move 'X' or 'O'
+       *
+       * @method checkWinner
+       * @returns {Number} - Return 0 or number of scores if found wins combination
+       */
       checkWinner: function(){
         var winScores = [ 7, 56, 448, 73, 146, 292, 273, 84];
         var boardState = this.getBoardState();
@@ -283,6 +423,13 @@ Element providing solution to no problem in particular.
         return 0;
       },
 
+      /**
+       * Returns binary representation of current board state by scores number
+       *
+       * @method getBoardStateByScore
+       * @param {Number} score - Number of score
+       * @returns {String} - return binary representation of number of scores
+       */
       getBoardStateByScore: function(score){
         var pad = function(num, size) {
           var s = "000000000" + num;
@@ -291,6 +438,12 @@ Element providing solution to no problem in particular.
         return pad(score.toString(2), 9);
       },
 
+      /**
+       * Make animations on combination of cells as result of win extracted from scores number
+       *
+       * @method highlightWinRow
+       * @param {Number} score - Number of score
+       */
       highlightWinRow: function(score){
         var state = this.getBoardStateByScore(score);
         for(var i= 0, len = state.length; i < len; i++) {
@@ -306,6 +459,11 @@ Element providing solution to no problem in particular.
         }
       },
 
+      /**
+       * Stops the game
+       *
+       * @method stopGame
+       */
       stopGame: function(){
         this.running = false;
         if(this.hasWinner()){
@@ -325,6 +483,11 @@ Element providing solution to no problem in particular.
         this.toggleGameButton();
       },
 
+      /**
+       * Starts the game
+       *
+       * @method startGame
+       */
       startGame: function(){
         this.running = true;
         this.gameboard.length = 0;
@@ -337,6 +500,11 @@ Element providing solution to no problem in particular.
         this.toggleGameButton();
       },
 
+      /**
+       * Change style of the game button when game stopped or started
+       *
+       * @method toggleGameButton
+       */
       toggleGameButton: function(){
         var gameBtn = this.$.game_btn;
         this.gameButtonIcon = this.running ? "av:stop" : "av:play-arrow";
@@ -349,6 +517,11 @@ Element providing solution to no problem in particular.
         }
       },
 
+      /**
+       * Apply grayed style for all cells on the game board, when game stops
+       *
+       * @method muteCells
+       */
       muteCells: function(){
         if(!this.hasWinner()) {
           var cells = this.shadowRoot.querySelectorAll('.cell');
@@ -358,16 +531,31 @@ Element providing solution to no problem in particular.
         }
       },
 
+      /**
+       * Checks if winner of game present
+       *
+       * @method hasWinner
+       * @returns {Boolean} - return status of winner presence
+       */
       hasWinner: function(){
         return this.wins !== '--';
       },
 
+      /**
+       * Checks presence of a Draw situation
+       *
+       * @method hasDraw
+       * @returns {Boolean} - return status of Draw
+       */
       hasDraw: function(){
         var tacScore = parseInt(this.gameboardTac.join(""), 2),
             ticScore = parseInt(this.gameboardTic.join(""), 2);
          return (tacScore | ticScore) == 511;
       },
 
+      /**
+       * Callback for processing cell clicks
+       */
       cellClick: function(event, detail, sender) {
         var senderRowCol =  sender.id.split('_');
         var row = +senderRowCol[1];
@@ -393,6 +581,11 @@ Element providing solution to no problem in particular.
         }
       },
 
+      /**
+       * Toggle states of Game button (Starts or Stops game)
+       *
+       * @method toggleGame
+       */
       toggleGame: function(){
         if(this.running){
           this.stopGame();
