@@ -1,0 +1,408 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../core-animation/core-animation.html">
+<link rel="import" href="../core-animation/core-animation-group.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <tic-tac-toe></tic-tac-toe>
+
+@element tic-tac-toe
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://polymerlabs.github.io/tic-tac-toe
+-->
+<polymer-element name="tic-tac-toe" attributes="notitle author">
+
+  <template>
+
+    <link rel="stylesheet" href="tic-tac-toe.css" />
+
+    <core-animation-group id="fadescale" type="seq">
+      <core-animation duration="300">
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="1">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="0.3">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="1">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+      <core-animation duration="300">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.4)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <core-animation-group id="shake" type="seq">
+      <core-animation duration="500">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.5)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.5)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <core-animation-group id="bigshake" type="seq">
+      <core-animation duration="800">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <div class="game-toolbar" vertical layout center>
+      <div horizontal layout class="row">
+        <div flex class="info">
+          <div>
+            <span class="x-label">Current move:</span><span class="label">{{currentmove}}</span>
+          </div>
+          <div id="message">
+            <span class="label-message">{{information}}</span>
+          </div>
+        </div>
+        <div id="game_btn" class="fab start" on-click="{{toggleGame}}">
+          <core-icon icon="{{gameButtonIcon}}"></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+    </div>
+    <div class="game-board" vertical layout center>
+      <div horizontal layout class="row">
+        <div id="cell_0_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_0_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_0_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+      <div horizontal layout class="row">
+        <div id="cell_1_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_1_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_1_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+      <div horizontal layout class="row">
+        <div id="cell_2_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_2_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_2_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      currentmove: 'X',
+
+      gameboard: null,
+
+      gameboardTic: null,
+
+      gameboardTac: null,
+
+      running: false,
+
+      gameButtonTitle: "Start game",
+
+      gameButtonIcon: "av:play-arrow",
+
+      wins: "--",
+
+      winnerScore: 0,
+
+      information: "",
+
+      ready: function() {
+
+      },
+
+      created: function(){
+        this.currentmove = 'X';
+        this.initGameData();
+      },
+
+      toggleNextMove: function(){
+        this.currentmove = this.currentmove == 'X' ? 'O' : 'X';
+      },
+
+      playFadeScaleAnimation: function(target){
+        var animation = this.$.fadescale;
+        animation.target = target;
+        animation.play();
+      },
+
+      playBigShakeAnimation: function(target){
+        var animation = this.$.bigshake;
+        animation.target = target;
+        animation.play();
+      },
+
+      playShakeAnimation: function(target){
+        var animation = this.$.shake;
+        animation.target = target;
+        animation.play();
+      },
+
+      toggleTicTacStyle: function(target){
+        target.classList.remove('grey');
+        target.classList.add(this.currentmove == 'X' ? 'tic' : 'tac');
+        var iconElement =  target.querySelector('core-icon');
+        iconElement.icon = this.currentmove == 'X' ?  'close' : 'radio-button-off';
+      },
+
+      toggleGrayedStyle: function(target){
+        target.classList.remove('grey');
+        target.classList.remove('tac');
+        target.classList.remove('tic');
+        target.classList.add('grayed');
+      },
+
+      fillGameBoard: function(row, col){
+        this.gameboard[row][col] = this.currentmove;
+        var boardState = this.getBoardState();
+        boardState[row * 3 + col] = 1;
+      },
+
+      isGameBoardCellClear: function(row, col){
+        return !this.gameboard[row][col];
+      },
+
+      resetCells: function(){
+        var cells = this.shadowRoot.querySelectorAll('.cell');
+        for(var i= 0, len = cells.length; i < len; i++){
+          var cell = cells[i];
+          var coreIcon = cell.querySelector('core-icon');
+          coreIcon.icon = " ";
+          cell.classList.remove('tic');
+          cell.classList.remove('tac');
+          cell.classList.remove('grayed');
+          cell.classList.add('grey');
+        }
+      },
+
+      initGameData: function(){
+        this.wins = '--';
+        this.currentmove = 'X';
+        this.gameboard = [new Array(3), new Array(3), new Array(3)];
+        this.gameboardTic = [0,0,0,0,0,0,0,0,0];
+        this.gameboardTac = [0,0,0,0,0,0,0,0,0];
+      },
+
+      getBoardState: function(){
+        return this.currentmove == 'X' ? this.gameboardTic : this.gameboardTac;
+      },
+
+      checkWinner: function(){
+        var winScores = [ 7, 56, 448, 73, 146, 292, 273, 84];
+        var boardState = this.getBoardState();
+        var boardScore = parseInt(boardState.join(''),2);
+        for(var i = 0, len = winScores.length; i<len; i++){
+          if((boardScore & winScores[i] ^ winScores[i]) == 0) {
+            return winScores[i];
+          }
+        }
+        return 0;
+      },
+
+      getBoardStateByScore: function(score){
+        var pad = function(num, size) {
+          var s = "000000000" + num;
+          return s.substr(s.length-size);
+        };
+        return pad(score.toString(2), 9);
+      },
+
+      highlightWinRow: function(score){
+        var state = this.getBoardStateByScore(score);
+        for(var i= 0, len = state.length; i < len; i++) {
+          var notZero = +state[i];
+          var row = Math.floor(i / 3),
+              col = i % 3;
+          var target = this.$['cell_' + row + '_' + col];
+          if(notZero){
+            this.playShakeAnimation(target);
+          }else{
+            this.toggleGrayedStyle(target);
+          }
+        }
+      },
+
+      stopGame: function(){
+        this.running = false;
+        if(this.hasWinner()){
+          this.highlightWinRow(this.winnerScore);
+          this.information = this.currentmove + " wins!!!";
+          this.playBigShakeAnimation(this.$.message);
+          this.fire('onwinner', { winner: this.currentmove });
+        }else if(this.hasDraw()) {
+          this.information = "It's draw!";
+          this.playBigShakeAnimation(this.$.message);
+          this.fire('ondraw');
+        }else{
+          this.information = "Game stopped!";
+          this.fire('onstop');
+        }
+        this.muteCells();
+        this.toggleGameButton();
+      },
+
+      startGame: function(){
+        this.running = true;
+        this.gameboard.length = 0;
+        this.gameboardTic.length = 0;
+        this.gameboardTac.length = 0;
+        this.initGameData();
+        this.resetCells();
+
+        this.information = "Game started!";
+        this.toggleGameButton();
+      },
+
+      toggleGameButton: function(){
+        var gameBtn = this.$.game_btn;
+        this.gameButtonIcon = this.running ? "av:stop" : "av:play-arrow";
+        if(this.running){
+          gameBtn.classList.remove('start');
+          gameBtn.classList.add('stop');
+        }else {
+          gameBtn.classList.remove('stop');
+          gameBtn.classList.add('start');
+        }
+      },
+
+      muteCells: function(){
+        if(!this.hasWinner()) {
+          var cells = this.shadowRoot.querySelectorAll('.cell');
+          for (var i = 0, len = cells.length; i < len; i++) {
+            this.toggleGrayedStyle(cells[i]);
+          }
+        }
+      },
+
+      hasWinner: function(){
+        return this.wins !== '--';
+      },
+
+      hasDraw: function(){
+        var tacScore = parseInt(this.gameboardTac.join(""), 2),
+            ticScore = parseInt(this.gameboardTic.join(""), 2);
+         return (tacScore | ticScore) == 511;
+      },
+
+      cellClick: function(event, detail, sender) {
+        var senderRowCol =  sender.id.split('_');
+        var row = +senderRowCol[1];
+        var col = +senderRowCol[2];
+        var winnerScore = 0;
+
+        if(!this.running) return;
+
+        if(this.isGameBoardCellClear(row, col)){
+          this.fillGameBoard(row,col);
+          this.toggleTicTacStyle(sender);
+          winnerScore = this.checkWinner();
+          if(winnerScore) {
+            this.wins = this.currentmove;
+            this.winnerScore = winnerScore;
+            this.stopGame();
+          }else if(this.hasDraw()){
+            this.stopGame();
+          }else{
+            this.playFadeScaleAnimation(sender);
+            this.toggleNextMove();
+          }
+        }
+      },
+
+      toggleGame: function(){
+        if(this.running){
+          this.stopGame();
+        }else{
+          this.startGame();
+        }
+      }
+
+    });
+
+  </script>
+
+</polymer-element>
