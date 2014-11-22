@@ -1,0 +1,17 @@
+{
+  "name": "x-calculator",
+  "version": "1.0.0",
+  "description": "Polymer Tic-Tac-Toe component",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-connect": "*"
+  },
+  "author": "Alexander Vishnyakov",
+  "license": "MIT"
+}

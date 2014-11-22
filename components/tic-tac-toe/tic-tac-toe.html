@@ -1,0 +1,601 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../core-animation/core-animation.html">
+<link rel="import" href="../core-animation/core-animation-group.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+
+<!--
+Polymer element for Tic-Tac-Toe game
+
+##### Example
+
+    <tic-tac-toe></tic-tac-toe>
+
+@element tic-tac-toe
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://polymerlabs.github.io/tic-tac-toe
+-->
+<polymer-element name="tic-tac-toe" attributes="">
+
+  <template>
+
+    <link rel="stylesheet" href="tic-tac-toe.css" />
+
+    <core-animation-group id="fadescale" type="seq">
+      <core-animation duration="300">
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="1">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="0.3">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="opacity" value="1">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+      <core-animation duration="300">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.4)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <core-animation-group id="shake" type="seq">
+      <core-animation duration="500">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.5)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.5)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <core-animation-group id="bigshake" type="seq">
+      <core-animation duration="800">
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+        <core-animation-keyframe>
+          <core-animation-prop name="transform" value="scale(1.7)">
+          </core-animation-prop>
+        </core-animation-keyframe>
+      </core-animation>
+    </core-animation-group>
+
+    <div class="game-toolbar" vertical layout center>
+      <div horizontal layout class="row">
+        <div flex class="info">
+          <div>
+            <span class="x-label">Current move:</span><span class="label">{{currentmove}}</span>
+          </div>
+          <div id="message">
+            <span class="label-message">{{information}}</span>
+          </div>
+        </div>
+        <div id="game_btn" class="fab start" on-click="{{toggleGame}}">
+          <core-icon icon="{{gameButtonIcon}}"></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+    </div>
+    <div class="game-board" vertical layout center>
+      <div horizontal layout class="row">
+        <div id="cell_0_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_0_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_0_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+      <div horizontal layout class="row">
+        <div id="cell_1_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_1_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_1_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+      <div horizontal layout class="row">
+        <div id="cell_2_0" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_2_1" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+        <div id="cell_2_2" class="cell fab grey" on-click="{{cellClick}}">
+          <core-icon icon=""></core-icon>
+          <paper-ripple class="circle recenteringTouch" fit=""></paper-ripple>
+        </div>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      /**
+       * The 'onwinner' event is fired when winner exists
+       *
+       * @event onwinner
+       */
+
+      /**
+       * The 'ondraw' event is fired when a draw situation reached
+       *
+       * @event ondraw
+       */
+
+      /**
+       * The 'onstop' event is fired when game stopped
+       *
+       * @event onstop
+       */
+
+      /**
+       * Current move 'X' or 'O'
+       *
+       * @attribute currentmove
+       * @type String
+       */
+      currentmove: 'X',
+
+      /**
+       * Game board with results of all moving
+       *
+       * @attribute gameboard
+       * @type Array
+       */
+      gameboard: null,
+
+      /**
+       * Game board with results of moving 'X'
+       *
+       * @attribute gameboardTic
+       * @type Array
+       */
+      gameboardTic: null,
+
+      /**
+       * Game board with results of moving 'O'
+       *
+       * @attribute gameboardTac
+       * @type Array
+       */
+      gameboardTac: null,
+
+      /**
+       * Current status of game, running or not
+       *
+       * @attribute running
+       * @type Boolean
+       */
+      running: false,
+
+      /**
+       * Default icon for start or stop game button
+       *
+       * @attribute gameButtonIcon
+       * @type String
+       */
+      gameButtonIcon: "av:play-arrow",
+
+      /**
+       * Flag which contains current winner 'X', 'O' or '--'
+       *
+       * @attribute wins
+       * @type String
+       */
+      wins: "--",
+
+      /**
+       * Scores of winner
+       *
+       * @attribute winnerScore
+       * @type Number
+       */
+      winnerScore: 0,
+
+      /**
+       * Field for storing information for user
+       *
+       * @attribute information
+       * @type String
+       */
+      information: "",
+
+      ready: function() {
+
+      },
+
+      created: function(){
+        this.currentmove = 'X';
+        this.initGameData();
+      },
+
+      /**
+       * Change current move using switching between 'X' and 'O'
+       * @method toggleNextMove
+       */
+      toggleNextMove: function(){
+        this.currentmove = this.currentmove == 'X' ? 'O' : 'X';
+      },
+
+      /**
+       * Play 'FadeScale' animation on HTMLElement
+       *
+       * @method playFadeScaleAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
+      playFadeScaleAnimation: function(target){
+        var animation = this.$.fadescale;
+        animation.target = target;
+        animation.play();
+      },
+
+      /**
+       * Play 'BigShake' animation on HTMLElement
+       *
+       * @method playBigShakeAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
+      playBigShakeAnimation: function(target){
+        var animation = this.$.bigshake;
+        animation.target = target;
+        animation.play();
+      },
+
+      /**
+       * Play 'Shake' animation on HTMLElement
+       *
+       * @method playShakeAnimation
+       * @param {object} target - HTMLElement for playing animation on it.
+       */
+      playShakeAnimation: function(target){
+        var animation = this.$.shake;
+        animation.target = target;
+        animation.play();
+      },
+
+      /**
+       * Changes style of HTMLElement which represent a cell
+       *
+       * @method toggleTicTacStyle
+       * @param {object} target - HTMLElement of cell element.
+       */
+      toggleTicTacStyle: function(target){
+        target.classList.remove('grey');
+        target.classList.add(this.currentmove == 'X' ? 'tic' : 'tac');
+        var iconElement =  target.querySelector('core-icon');
+        iconElement.icon = this.currentmove == 'X' ?  'close' : 'radio-button-off';
+      },
+
+      /**
+       * Set grayed style for HTMLElement which represent a cell
+       *
+       * @method toggleGrayedStyle
+       * @param {object} target - HTMLElement of cell element.
+       */
+      toggleGrayedStyle: function(target){
+        target.classList.remove('grey');
+        target.classList.remove('tac');
+        target.classList.remove('tic');
+        target.classList.add('grayed');
+      },
+
+      /**
+       * Fill array of gameboard element with value of current move by row and column indexes
+       *
+       * @method fillGameBoard
+       * @param {Number} row - Index of row for cell element.
+       * @param {Number} col - Index of col for cell element.
+       */
+      fillGameBoard: function(row, col){
+        this.gameboard[row][col] = this.currentmove;
+        var boardState = this.getBoardState();
+        boardState[row * 3 + col] = 1;
+      },
+
+      /**
+       * Checks that cell of game board is empty by using row and column indexes
+       *
+       * @method isGameBoardCellClear
+       * @param {Number} row - Index of row for cell element.
+       * @param {Number} col - Index of column for cell element.
+       * @returns {Boolean} - Status of gameboard cell (filled or empty)
+       */
+      isGameBoardCellClear: function(row, col){
+        return !this.gameboard[row][col];
+      },
+
+      /**
+       * Reset style of cells and clear icon inside cells
+       *
+       * @method resetCells
+       */
+      resetCells: function(){
+        var cells = this.shadowRoot.querySelectorAll('.cell');
+        for(var i= 0, len = cells.length; i < len; i++){
+          var cell = cells[i];
+          var coreIcon = cell.querySelector('core-icon');
+          coreIcon.icon = " ";
+          cell.classList.remove('tic');
+          cell.classList.remove('tac');
+          cell.classList.remove('grayed');
+          cell.classList.add('grey');
+        }
+      },
+
+      /**
+       * Initialize game data
+       *
+       * @method initGameData
+       */
+      initGameData: function(){
+        this.wins = '--';
+        this.currentmove = 'X';
+        this.gameboard = [new Array(3), new Array(3), new Array(3)];
+        this.gameboardTic = [0,0,0,0,0,0,0,0,0];
+        this.gameboardTac = [0,0,0,0,0,0,0,0,0];
+      },
+
+      /**
+       * Return gameboard state for current type of move ('X' or 'O')
+       *
+       * @method getBoardState
+       * @returns {Array} - Array with statuses of gameboard cells for 'X' or 'O'
+       */
+      getBoardState: function(){
+        return this.currentmove == 'X' ? this.gameboardTic : this.gameboardTac;
+      },
+
+      /**
+       * Returns number of scores if found wins combination for current move 'X' or 'O'
+       *
+       * @method checkWinner
+       * @returns {Number} - Return 0 or number of scores if found wins combination
+       */
+      checkWinner: function(){
+        var winScores = [ 7, 56, 448, 73, 146, 292, 273, 84];
+        var boardState = this.getBoardState();
+        var boardScore = parseInt(boardState.join(''),2);
+        for(var i = 0, len = winScores.length; i<len; i++){
+          if((boardScore & winScores[i] ^ winScores[i]) == 0) {
+            return winScores[i];
+          }
+        }
+        return 0;
+      },
+
+      /**
+       * Returns binary representation of current board state by scores number
+       *
+       * @method getBoardStateByScore
+       * @param {Number} score - Number of score
+       * @returns {String} - return binary representation of number of scores
+       */
+      getBoardStateByScore: function(score){
+        var pad = function(num, size) {
+          var s = "000000000" + num;
+          return s.substr(s.length-size);
+        };
+        return pad(score.toString(2), 9);
+      },
+
+      /**
+       * Make animations on combination of cells as result of win extracted from scores number
+       *
+       * @method highlightWinRow
+       * @param {Number} score - Number of score
+       */
+      highlightWinRow: function(score){
+        var state = this.getBoardStateByScore(score);
+        for(var i= 0, len = state.length; i < len; i++) {
+          var notZero = +state[i];
+          var row = Math.floor(i / 3),
+              col = i % 3;
+          var target = this.$['cell_' + row + '_' + col];
+          if(notZero){
+            this.playShakeAnimation(target);
+          }else{
+            this.toggleGrayedStyle(target);
+          }
+        }
+      },
+
+      /**
+       * Stops the game
+       *
+       * @method stopGame
+       */
+      stopGame: function(){
+        this.running = false;
+        if(this.hasWinner()){
+          this.highlightWinRow(this.winnerScore);
+          this.information = this.currentmove + " wins!!!";
+          this.playBigShakeAnimation(this.$.message);
+          this.fire('onwinner', { winner: this.currentmove });
+        }else if(this.hasDraw()) {
+          this.information = "It's draw!";
+          this.playBigShakeAnimation(this.$.message);
+          this.fire('ondraw');
+        }else{
+          this.information = "Game stopped!";
+          this.fire('onstop');
+        }
+        this.muteCells();
+        this.toggleGameButton();
+      },
+
+      /**
+       * Starts the game
+       *
+       * @method startGame
+       */
+      startGame: function(){
+        this.running = true;
+        this.gameboard.length = 0;
+        this.gameboardTic.length = 0;
+        this.gameboardTac.length = 0;
+        this.initGameData();
+        this.resetCells();
+
+        this.information = "Game started!";
+        this.toggleGameButton();
+      },
+
+      /**
+       * Change style of the game button when game stopped or started
+       *
+       * @method toggleGameButton
+       */
+      toggleGameButton: function(){
+        var gameBtn = this.$.game_btn;
+        this.gameButtonIcon = this.running ? "av:stop" : "av:play-arrow";
+        if(this.running){
+          gameBtn.classList.remove('start');
+          gameBtn.classList.add('stop');
+        }else {
+          gameBtn.classList.remove('stop');
+          gameBtn.classList.add('start');
+        }
+      },
+
+      /**
+       * Apply grayed style for all cells on the game board, when game stops
+       *
+       * @method muteCells
+       */
+      muteCells: function(){
+        if(!this.hasWinner()) {
+          var cells = this.shadowRoot.querySelectorAll('.cell');
+          for (var i = 0, len = cells.length; i < len; i++) {
+            this.toggleGrayedStyle(cells[i]);
+          }
+        }
+      },
+
+      /**
+       * Checks if winner of game present
+       *
+       * @method hasWinner
+       * @returns {Boolean} - return status of winner presence
+       */
+      hasWinner: function(){
+        return this.wins !== '--';
+      },
+
+      /**
+       * Checks presence of a Draw situation
+       *
+       * @method hasDraw
+       * @returns {Boolean} - return status of Draw
+       */
+      hasDraw: function(){
+        var tacScore = parseInt(this.gameboardTac.join(""), 2),
+            ticScore = parseInt(this.gameboardTic.join(""), 2);
+         return (tacScore | ticScore) == 511;
+      },
+
+      /**
+       * Callback for processing cell clicks
+       */
+      cellClick: function(event, detail, sender) {
+        var senderRowCol =  sender.id.split('_');
+        var row = +senderRowCol[1];
+        var col = +senderRowCol[2];
+        var winnerScore = 0;
+
+        if(!this.running) return;
+
+        if(this.isGameBoardCellClear(row, col)){
+          this.fillGameBoard(row,col);
+          this.toggleTicTacStyle(sender);
+          winnerScore = this.checkWinner();
+          if(winnerScore) {
+            this.wins = this.currentmove;
+            this.winnerScore = winnerScore;
+            this.stopGame();
+          }else if(this.hasDraw()){
+            this.stopGame();
+          }else{
+            this.playFadeScaleAnimation(sender);
+            this.toggleNextMove();
+          }
+        }
+      },
+
+      /**
+       * Toggle states of Game button (Starts or Stops game)
+       *
+       * @method toggleGame
+       */
+      toggleGame: function(){
+        if(this.running){
+          this.stopGame();
+        }else{
+          this.startGame();
+        }
+      }
+
+    });
+
+  </script>
+
+</polymer-element>

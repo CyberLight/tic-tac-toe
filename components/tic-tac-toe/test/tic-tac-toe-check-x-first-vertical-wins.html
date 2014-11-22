@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>tic-tac-toe</title>
+
+  <script src="../../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../../polymer-test-tools/tools.html">
+  <script src="../../polymer-test-tools/htmltest.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../tic-tac-toe.html">
+
+</head>
+<body>
+
+  <tic-tac-toe></tic-tac-toe>
+
+  <script>
+
+    document.addEventListener('polymer-ready', function() {
+      var ticTacToe = document.querySelector('tic-tac-toe');
+      var cell_0_0 = ticTacToe.$.cell_0_0;
+      var cell_0_1 = ticTacToe.$.cell_0_1;
+      var cell_0_2 = ticTacToe.$.cell_0_2;
+      var cell_1_0 = ticTacToe.$.cell_1_0;
+      var cell_1_1 = ticTacToe.$.cell_1_1;
+      var cell_1_2 = ticTacToe.$.cell_1_2;
+      var cell_2_0 = ticTacToe.$.cell_2_0;
+      var cell_2_1 = ticTacToe.$.cell_2_1;
+      var cell_2_2 = ticTacToe.$.cell_2_2;
+      var game_btn = ticTacToe.$.game_btn;
+
+      ticTacToe.addEventListener('onwinner', function(e) {
+        assert.equal(ticTacToe.information, 'X wins!!!');
+        assert.ok(ticTacToe.hasWinner()>0, "No X winner!");
+        assert.equal(ticTacToe.currentmove, 'X');
+        done();
+      });
+
+      game_btn.click();
+      cell_0_0.click(); //X
+      cell_1_1.click(); //O
+      cell_1_0.click(); //X
+      cell_1_2.click(); //O
+      cell_2_0.click(); //X
+    });
+
+  </script>
+
+</body>
+</html>

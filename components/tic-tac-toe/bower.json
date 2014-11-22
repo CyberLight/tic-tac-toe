@@ -1,0 +1,23 @@
+{
+  "name": "tic-tac-toe",
+  "version": "0.0.2",
+  "authors": [
+    "CyberLight <cyberlight@live.ru>"
+  ],
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components"
+  ],
+  "main": "tic-tac-toe.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "paper-ripple": "Polymer/paper-ripple#~0.5.1",
+    "core-animation": "Polymer/core-animation#~0.5.1",
+    "core-icon": "Polymer/core-icon#~0.5.1",
+    "font-roboto": "Polymer/font-roboto#~0.5.1"
+  },
+  "devDependencies": {
+    "polymer-test-tools": "Polymer/polymer-test-tools#^0.5.1"
+  }
+}

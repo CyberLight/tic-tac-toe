@@ -1,0 +1,43 @@
+<link rel="import" href="../../polymer-test-tools/tools.html">
+
+<script src="../../polymer-test-tools/mocha-htmltest.js"></script>
+
+<script>
+
+  mocha.setup({ui: 'tdd', slow: 1000, timeout: 10000, htmlbase: ''});
+
+  htmlSuite('tic-tac-toe', function() {
+    htmlTest('tic-tac-toe-defaults.html');
+    htmlTest('tic-tac-toe-toggle-next-move.html');
+    htmlTest('tic-tac-toe-fill-game-board.html');
+    htmlTest('tic-tac-toe-fill-game-board-toggle.html');
+    htmlTest('tic-tac-toe-is-game-board-is-cell-clear.html');
+    htmlTest('tic-tac-toe-is-game-board-is-cell-not-clear.html');
+    htmlTest('tic-tac-toe-check-click-fill-x.html');
+    htmlTest('tic-tac-toe-check-click-fill-o.html');
+    htmlTest('tic-tac-toe-check-click-fill-o-x.html');
+    htmlTest('tic-tac-toe-not-started-game-no-fill.html');
+    htmlTest('tic-tac-toe-check-o-wins.html');
+    htmlTest('tic-tac-toe-check-x-wins.html');
+    htmlTest('tic-tac-toe-check-draw.html');
+    htmlTest('tic-tac-toe-check-x-first-diagonal-wins.html');
+    htmlTest('tic-tac-toe-check-x-second-diagonal-wins.html');
+    htmlTest('tic-tac-toe-check-o-first-diagonal-wins.html');
+    htmlTest('tic-tac-toe-check-o-second-diagonal-wins.html');
+    htmlTest('tic-tac-toe-check-o-first-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-o-second-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-o-third-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-x-first-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-x-second-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-x-third-horizontal-row-wins.html');
+    htmlTest('tic-tac-toe-check-o-first-vertical-row-wins.html');
+    htmlTest('tic-tac-toe-check-o-second-vertical-row-wins.html');
+    htmlTest('tic-tac-toe-check-o-third-vertical-row-wins.html');
+    htmlTest('tic-tac-toe-check-x-first-vertical-wins.html');
+    htmlTest('tic-tac-toe-check-x-second-vertical-wins.html');
+    htmlTest('tic-tac-toe-check-x-third-vertical-wins.html');
+  });
+
+  mocha.run();
+
+</script>
